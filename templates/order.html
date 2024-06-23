@@ -1,0 +1,164 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>Новый заказ</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'order.css' %}">
+{% endblock head %}
+
+{% block content %}
+    {% include 'messages.html' %}
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <img style="max-width: 100%" src="{{ photo }}">
+                </div>
+                <div class="col">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Кузов</th>
+                            <td>{{ car.the_body }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Объем</th>
+                            <td>{{ car.volume }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">КПП</th>
+                            <td>{{ car.cpp }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Год</th>
+                            <td>{{ car.year_car }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Пробег</th>
+                            <td>{{ car.mileage }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Оценка</th>
+                            <td>{{ car.estimation }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Предварительная цена</th>
+                            <td>{{ car.price }} р.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form_flex" style="display: none">
+                <div class="col-md-12 mb-1">
+                    <label for="{{ form.id_car.id_for_label }}">{{ form.id_car.label }}</label>
+                    {{ form.id_car }}
+                </div>
+            </div>
+            <div class="form_flex">
+                <div class="col-md-12 mb-1">
+                    <label for="{{ form.worker.id_for_label }}">{{ form.worker.label }}</label>
+                    <div class="input-group">
+                        {{ form.worker }}
+                    </div>
+                </div>
+            </div>
+            <div class="form_flex">
+                <div class="col-md-12 mb-1">
+                    <label for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+                    <div class="input-group">
+                        {{ form.price }}
+                    </div>
+                </div>
+            </div>
+            <div class="form_flex">
+                <div class="col-md-12 mb-1">
+                    <label for="{{ form.price_customer.id_for_label }}">{{ form.price_customer.label }}</label>
+                    <div class="input-group">
+                        {{ form.price_customer }}
+                    </div>
+                </div>
+            </div>
+            <div class="form_flex">
+                <div class="col-md-12 mb-1">
+                    <label for="{{ form.delivery.id_for_label }}">{{ form.delivery.label }}</label>
+                    <div class="input-group">
+                        {{ form.delivery }}
+                    </div>
+                </div>
+            </div>
+            <div class="form_flex" id="city-selection">
+                <div class="col-md-12 mb-1">
+                    <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+                    <div class="input-group">
+                        {{ form.city }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_flex mb-3">
+                <div class="col-md-9 mb-1">
+                    <label for="{{ form.customer.id_for_label }}">{{ form.customer.label }}</label>
+                    <div class="input-group">
+                        {{ form.customer }}
+                    </div>
+                </div>
+                <div class="col-md-3 mb-1" style="position: relative;">
+                    <div class="bd-example bd-example-position-examples d-flex justify-content-around" style="position:absolute; bottom:0;">
+                        <input type="submit" name="customer" class="btn btn-outline-dark " value="Создать клиента"/>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bd-example bd-example-position-examples d-flex justify-content-around ">
+                <input type="submit" name="create" class="btn btn-outline-dark position-relative" value="Оформить заказ"/>
+            </div>
+        </form>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var deliverySelect = document.getElementById('id_delivery');
+        var citySelection = document.getElementById('city-selection');
+
+        function toggleCitySelection() {
+            if (deliverySelect.value === 'Нужна доставка') {
+                citySelection.style.display = 'block';
+            } else {
+                citySelection.style.display = 'none';
+            }
+        }
+
+        deliverySelect.addEventListener('change', toggleCitySelection);
+
+        // Проверка при загрузке страницы
+        toggleCitySelection();
+    });
+
+        $(document).ready(function(){
+            // Применение маски для ввода цены в рублях
+            $('input[name="price_customer"]').inputmask({
+                alias: 'numeric',
+                groupSeparator: ' ',
+                autoGroup: true,
+                digits: 2,
+                digitsOptional: true,
+                prefix: '',
+                suffix: ' ₽',
+                rightAlign: false,
+                removeMaskOnSubmit: true
+            });
+
+            // Ограничение ввода только числами и запятыми
+            $('input[name="price_customer"]').on('input', function() {
+                this.value = this.value.replace(/[^0-9,.]/g, '');
+            });
+        });
+    </script>
+{% endblock content %}

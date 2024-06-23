@@ -1,0 +1,52 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>Наши цены</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'orders.css' %}">
+{% endblock head %}
+
+{% block content %}
+    {% include 'messages.html' %}
+
+    <form method="POST" enctype="multipart/form-data" style="text-align: center; margin-top: 15px">
+            {% csrf_token %}
+            <div class="bd-example bd-example-position-examples d-flex justify-content-around mb-3">
+                <input type="submit" name="new" class="btn btn-outline-dark position-relative" value="Добавить пункт назначения"/>
+            </div>
+
+    </form>
+
+    <ul class="d-grid gap-2 col-8 mx-auto">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Пункт назначения</th>
+                <th scope="col">Цена</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for el in transport_company_prices %}
+                <tr style="vertical-align: middle">
+                    <th scope="row">{{ el.id }}</th>
+                    <td>{{ el.place }}</td>
+                    <td>{{ el.price }}</td>
+                    <td>
+
+                        <a href="{{ el.get_absolute_url_transport_company_price }}">
+                            <button style="width: 100px"
+                                    class="btn btn-outline-dark">
+                                Открыть
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </ul>
+{% endblock content %}

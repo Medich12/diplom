@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>parser</title>
+    {% extends 'base.html' %}
+    {% load static %}
+</head>
+{% block content %}
+    {% include 'messages.html' %}
+    <div class="parser" style="text-align: center;">
+
+        <form action="{% url 'parser' %}" method="post">
+            {% csrf_token %}
+            <div class="bd-example bd-example-position-examples d-flex justify-content-around">
+                <input type="submit" name="import" value="Импортировать новые машины с аукционов"
+                       class="btn btn-outline-dark position-relative"/>
+            </div>
+
+            <style>
+                button {
+                    margin-top: 15px;
+                }
+            </style>
+        </form>
+    </div>
+{% endblock content %}
+</html>

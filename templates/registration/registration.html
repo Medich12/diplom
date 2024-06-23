@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>Регистрация</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'registration.css' %}">
+{% endblock head %}
+
+{% block content %}
+    {% include 'messages.html' %}
+     <div class="d-grid gap-2 col-6 mx-auto">
+
+        <form method="POST">
+            {% csrf_token %}
+            <h2 class="text-center">Регистрация</h2>
+            <div class="form_flex">
+                <div class="col-md-6 mb-2">
+                    <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+                    {{ form.full_name }}
+                </div>
+
+                <div class="col-md-6 mb-2">
+                    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">@</span>
+                        </div>
+                        {{ form.username }}
+                    </div>
+                </div>
+            </div>
+            <div class="form_flex">
+                <div class="col-md-6 mb-2">
+                    <label for="{{ form.job_title.id_for_label }}">{{ form.job_title.label }}</label>
+                    {{ form.job_title }}
+                </div>
+
+                <div class="col-md-6 mb-2">
+                    <label for="{{ form.passport.id_for_label }}">{{ form.passport.label }}</label>
+                    {{ form.passport }}
+                </div>
+            </div>
+            <div class="form_flex">
+                <div class="col-md-6 mb-2">
+                    <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
+                    {{ form.phone_number }}
+                </div>
+
+            </div>
+
+            <div class="form_flex">
+                <div class="col-md-6 mb-2">
+                    <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+                    {{ form.password }}
+                </div>
+
+                <div class="col-md-6 mb-2">
+                    <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                    {{ form.password2 }}
+                </div>
+
+            </div>
+            <div class="form_flex">
+                <div class="col-md-6 mb-2" style="display: none">
+                    <label for="{{ form.date_joined.id_for_label }}">{{ form.date_joined.label }}</label>
+                    {{ form.date_joined }}
+                </div>
+            </div>
+            <div class="form_flex">
+                <div class="col-md-6 mb-2" style="display: none">
+                    <label for="{{ form.is_staff.id_for_label }}">{{ form.is_staff.label }}</label>
+                    {{ form.is_staff }}
+                </div>
+            </div>
+            <div class="form_flex">
+                <div class="col-md-6 mb-2" style="display: none">
+                    <label for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
+                    {{ form.is_active }}
+                </div>
+            </div>
+
+            <div class="bd-example bd-example-position-examples d-flex justify-content-around">
+                <input type="submit" class="btn btn-outline-dark position-relative" value="Зарегистрироваться"/>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function (){
+           IMask(
+               document.getElementById('{{ form.passport.id_for_label }}'), {
+                   mask: '0000 000000'
+               }
+           );
+           IMask(
+               document.getElementById('{{ form.phone_number.id_for_label }}'), {
+                   mask: '+7 (000)-000-00-00'
+               }
+           );
+        });
+    </script>
+{% endblock content %}
